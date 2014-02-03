@@ -1,0 +1,6 @@
+---
+- include: openjdk_deb.yaml tags=openjdk
+  when: ansible_distribution in [ 'Debian', 'Ubuntu' ]
+
+- include: openjdk_rpm.yaml tags=openjdk
+  when: ansible_distribution in [ 'Red Hat Enterprise Linux', 'CentOS', 'Amazon' ]

@@ -1,0 +1,8 @@
+---
+- name: "Fetch Elasticsearch"
+  get_url: url={{ elasticsearch.url }}/elasticsearch-{{ elasticsearch.version }}.noarch.rpm dest={{ elasticsearch.tmp }} 
+  register: elasticsearch_rpm
+
+- name: "Install Elasticsearch package"
+  shell: rpm -ivh {{ elasticsearch.tmp }}/elasticsearch-{{ elasticsearch.version }}.noarch.rpm 
+  when: elasticsearch_rpm.changed

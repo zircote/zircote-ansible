@@ -1,0 +1,6 @@
+---
+- name: install openjdk
+  apt: name={{ item }} state=installed
+  with_items:
+    - "openjdk-{{ openjdk.version }}-jre"
+    - "openjdk-{{ openjdk.version }}-jdk"
