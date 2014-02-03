@@ -1,0 +1,5 @@
+---
+- name: install openjdk
+  yum: name={{ item }} state=installed
+  with_items:
+    - "java-1.{{ openjdk.version }}.0-openjdk"

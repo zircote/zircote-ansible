@@ -1,0 +1,8 @@
+---
+elasticsearch:
+  url: "http://download.elasticsearch.org/elasticsearch/elasticsearch"
+  version: "0.90.10"
+  tmp: "/tmp"
+  plugin: "/usr/share/elasticsearch/bin/plugin"
+  config: "/etc/elasticsearch/elasticsearch.yml"
+  service: "elasticsearch"

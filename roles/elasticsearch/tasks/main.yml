@@ -1,0 +1,11 @@
+---
+- debug: var=elasticsearch
+
+- include: elasticsearch_deb.yaml tags=elasticsearch
+  when: ansible_distribution in [ 'Debian', 'Ubuntu' ]
+
+- include: elasticsearch_rpm.yaml tags=elasticsearch
+  when: ansible_distribution in [ 'Red Hat Enterprise Linux', 'CentOS', 'Amazon' ]
+
+- name: "Ensure Elasticsearch is running"
+  service: name={{ elasticsearch.service }} state=started

@@ -1,0 +1,8 @@
+---
+- name: Elasticsearch
+  hosts: elasticsearch
+  sudo: yes
+  vars:
+    elasticsearch.version: "0.90.10"
+  roles:
+    - elasticsearch
