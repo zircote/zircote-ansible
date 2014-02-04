@@ -1,0 +1,10 @@
+--- 
+- name: list plugins
+  action: command {{ elasticsearch.bin_dir}}/plugin --list
+  register: es_current_plugins
+  when: elasticsearch.with_plugins
+
+- name: install plugins
+  action: command {{ elasticsearch.bin_dir}}/plugin -install {{ item.origin }}
+  with_items: elasticsearch.plugins
+  when: elasticsearch.with_plugins and es_current_plugins.stdout.find(item.name) == -1

@@ -21,8 +21,5 @@ Vagrant.configure("2") do |config|
     ansible.playbook = "elasticsearch.yaml"
     ansible.inventory_path = "inventory/vagrant/inventory.ini"
     ansible.verbose = "extra"
-    #ansible.extra_vars = {
-    #  elasticsearch_ip_addr: IP_ADDR
-    #}
   end
 end

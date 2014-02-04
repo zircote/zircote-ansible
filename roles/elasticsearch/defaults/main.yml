@@ -1,1 +1,102 @@
 ---
+elasticsearch_ip_addr: "{{ansible_eth0.ipv4.address}}"
+elasticsearch:
+  url: http://download.elasticsearch.org/elasticsearch/elasticsearch
+  version: "0.90.10"
+  tmp: "/tmp"
+  service: "elasticsearch"
+  bin_dir: /usr/share/elasticsearch/bin
+  with_plugins: yes
+  plugins:
+    - { name: paramedic, origin: karmi/elasticsearch-paramedic }
+    - { name: lang-python, origin: elasticsearch/elasticsearch-lang-python/2.0.0.RC1 }
+    - { name: transport-memcached, origin: elasticsearch/elasticsearch-transport-memcached/2.0.0.RC1 }
+    - { name: transport-thrift, origin: elasticsearch/elasticsearch-transport-thrift/2.0.0.RC1 }
+  config:
+    bootstrap:
+    mlockall: true
+    index:
+      number_of_replicas: 0
+      number_of_shards: 1
+      search:
+        slowlog:
+          threshold:
+            fetch:
+              debug: 500ms
+              info: 800ms
+              trace: 200ms
+              warn: 1s
+            index:
+              debug: 2s
+              info: 5s
+              trace: 500ms
+              warn: 10s
+            query:
+              debug: 2s
+              info: 5s
+              trace: 500ms
+              warn: 10s
+    monitor:
+      jvm:
+        gc:
+          old:
+            debug: 2s
+            info: 5s
+            warn: 10s
+          young:
+            debug: 400ms
+            info: 700ms
+            warn: 1000ms
+    network:
+      bind_host: 0.0.0.0
+      host: "{{elasticsearch_ip_addr}}"
+      publish_host: "{{elasticsearch_ip_addr}}"
+    transport:
+      http:
+        enabled: true
+        max_content_length: 100mb
+        port: 9200
+      tcp:
+        compress: true
+        port: 9300
+              
+  logger:
+    es:
+      logger:
+        level: INFO
+    rootLogger: INFO, console, file
+    logger:
+      action: DEBUG
+      com.amazonaws: WARN
+      index.search.slowlog: TRACE, index_search_slow_log_file
+      index.indexing.slowlog: TRACE, index_indexing_slow_log_file
+    additivity:
+      index.search.slowlog: false
+      index.indexing.slowlog: false
+    appender:
+      console:
+        type: console
+        layout:
+          type: consolePattern
+          conversionPattern: "[%d{ISO8601}][%-5p][%-25c] %m%n"
+      file:
+        type: dailyRollingFile
+        file: ${path.logs}/${cluster.name}.log
+        datePattern: "'.'yyyy-MM-dd"
+        layout:
+          type: pattern
+          conversionPattern: "[%d{ISO8601}][%-5p][%-25c] %m%n"
+      index_search_slow_log_file:
+        type: dailyRollingFile
+        file: ${path.logs}/${cluster.name}_index_search_slowlog.log
+        datePattern: "'.'yyyy-MM-dd"
+        layout:
+          type: pattern
+          conversionPattern: "[%d{ISO8601}][%-5p][%-25c] %m%n"
+      index_indexing_slow_log_file:
+        type: dailyRollingFile
+        file: ${path.logs}/${cluster.name}_index_indexing_slowlog.log
+        datePattern: "'.'yyyy-MM-dd"
+        layout:
+          type: pattern
+          conversionPattern: "[%d{ISO8601}][%-5p][%-25c] %m%n"

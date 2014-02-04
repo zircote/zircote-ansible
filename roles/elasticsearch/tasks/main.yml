@@ -18,3 +18,6 @@
 
 - name: "Ensure Elasticsearch is running"
   service: name={{ elasticsearch.service }} state=started
+
+- name: include plugin tasks
+  include: plugins.yaml
