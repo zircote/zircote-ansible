@@ -1,0 +1,5 @@
+ES_JAVA_OPTS="-Xmx2g -Xms2g -Des.index.store.type=memory"
+ES_HOME=
+ES_HEAP_SIZE=1gb
+ES_MIN_MEM=1gb
+ES_MAX_MEM=1gb

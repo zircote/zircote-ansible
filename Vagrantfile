@@ -1,13 +1,13 @@
 MEMORY = 2048
 CPU_COUNT = 1
-
+IP_ADDR = "192.168.10.5"
 
 Vagrant.configure("2") do |config|
 
   config.vm.box     = "centos64-x86_64-20131030"
   config.vm.box_url = "https://github.com/2creatives/vagrant-centos/releases/download/v0.1.0/centos64-x86_64-20131030.box"
 
-  config.vm.network :private_network, ip: "192.168.10.5"
+  config.vm.network :private_network, ip: IP_ADDR
 
   config.vm.synced_folder ".", "/vagrant", :create => true
 
@@ -21,5 +21,8 @@ Vagrant.configure("2") do |config|
     ansible.playbook = "elasticsearch.yaml"
     ansible.inventory_path = "inventory/vagrant/inventory.ini"
     ansible.verbose = "extra"
+    #ansible.extra_vars = {
+    #  elasticsearch_ip_addr: IP_ADDR
+    #}
   end
 end
