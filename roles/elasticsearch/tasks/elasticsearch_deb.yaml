@@ -1,6 +1,7 @@
 ---
 - name: "Fetch Elasticsearch"
-  get_url: url={{ elasticsearch.url }}/elasticsearch-{{ elasticsearch.version }}.deb dest={{ elasticsearch.tmp }}
+  get_url: url={{ elasticsearch.url }}/elasticsearch-{{ elasticsearch.version }}.deb 
+           dest={{ elasticsearch.tmp }}/elasticsearch-{{ elasticsearch.version }}.deb
   register: elasticsearch_deb
 
 - name: "Install Elasticsearch package"

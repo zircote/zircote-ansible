@@ -9,12 +9,12 @@
   when: ansible_distribution in [ 'Red Hat Enterprise Linux', 'CentOS', 'Amazon' ]
 
 
-- name: write new es-config
-  template: src={{ item }}.j2 dest=/{{ item }}
-  notify: "Restart {{ elasticsearch.service }}"
-  with_items:
-    - etc/elasticsearch/elasticsearch.yml
-    - etc/elasticsearch/logging.yml
+#- name: write new es-config
+#  action: copy content="{{ item.content }}" dest={{ item.dest }} backup=yes
+#  notify: "Restart {{ elasticsearch.service }}"
+#  with_items:
+#    - { content: "{{ elasticsearch.config|to_nice_yaml }}", dest: /etc/elasticsearch/elasticsearch.yml }
+#    - { content: "{{ elasticsearch.logging|to_nice_yaml }}", dest: /etc/elasticsearch/logging.yml }
 
 - name: "Ensure Elasticsearch is running"
   service: name={{ elasticsearch.service }} state=started
