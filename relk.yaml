@@ -1,0 +1,45 @@
+---
+# Redis/Elasticsearch/Logstash/Kibana
+- hosts: redis-servers
+  sudo: yes
+  vars_files:
+    - "vars/{{ deploy_env }}.yaml"
+  roles:
+   - role: redis-server
+
+- hosts: elasticsearch
+  sudo: yes
+  vars_files:
+    - "vars/{{ deploy_env }}.yaml"
+  roles:
+   - role: elasticsearch
+
+- hosts: logstash
+  sudo: yes
+  vars_files:
+    - "vars/{{ deploy_env }}.yaml"
+  vars:
+    logstash_config:
+      indexer:
+        input:
+          redis:
+            host: {{ansible_eth0.ipv4.address}}
+            data_type: list
+            key: logstash
+            codec: json
+        output:
+          stdout:
+            debug: true
+            debug_format: json
+          elasticsearch:
+            host: {{ansible_eth0.ipv4.address}}
+        filter: []
+  roles:
+   - role: logstash
+
+- hosts: kibana
+  sudo: yes
+  vars_files:
+    - "vars/{{ deploy_env }}.yaml"
+  roles:
+   - role: kibana

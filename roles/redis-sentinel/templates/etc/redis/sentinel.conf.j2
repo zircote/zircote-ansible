@@ -1,0 +1,8 @@
+# sentinel.conf
+
+port {{ redis_sentinel_port }}
+
+{% if sentinel %}{% for row in sentinel %}
+sentinel {{ row }}
+{% endfor %}
+{% endif %}

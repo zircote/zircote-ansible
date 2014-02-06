@@ -1,0 +1,66 @@
+---
+redis_port: 6379
+elasticsearch_config:
+  cluster.name: elasticsearch
+  path.conf: /etc/elasticsearch
+  path.data: /var/lib/elasticsearch
+  path.work: /tmp/elasticsearch
+  path.logs: /var/log/elasticsearch
+  path.plugins: /usr/share/elasticsearch/plugins
+  network.bind_host: 0.0.0.0
+  network.publish_host: "{{ elasticsearch_ip_addr }}"
+  network.host: 192.168.0.1
+  index.search.slowlog.threshold.query.warn: 10s
+  index.search.slowlog.threshold.query.info: 5s
+  index.search.slowlog.threshold.query.debug: 2s
+  index.search.slowlog.threshold.query.trace: 500ms
+  index.search.slowlog.threshold.fetch.warn: 1s
+  index.search.slowlog.threshold.fetch.info: 800ms
+  index.search.slowlog.threshold.fetch.debug: 500ms
+  index.search.slowlog.threshold.fetch.trace: 200ms
+  index.indexing.slowlog.threshold.index.warn: 10s
+  index.indexing.slowlog.threshold.index.info: 5s
+  index.indexing.slowlog.threshold.index.debug: 2s
+  index.indexing.slowlog.threshold.index.trace: 500ms
+  monitor.jvm.gc.young.info: 700ms
+  monitor.jvm.gc.young.debug: 400ms
+  monitor.jvm.gc.old.warn: 10s
+  monitor.jvm.gc.old.info: 5s
+  monitor.jvm.gc.old.debug: 2s
+#  node.name: "Franz Kafka"
+#  node.master: true
+#  node.data: true
+#  node.max_local_storage_nodes: 1
+#  index.number_of_shards: 5
+#  index.number_of_replicas: 1
+#  index.number_of_shards: 1
+#  index.number_of_replicas: 0
+#  path.data: /path/to/data1,/path/to/data2
+#  plugin.mandatory: mapper-attachments,lang-groovy
+#  bootstrap.mlockall: true
+#  transport.tcp.port: 9300
+#  transport.tcp.compress: true
+#  http.port: 9200
+#  http.max_content_length: 100mb
+#  http.enabled: true
+#  gateway.type: local
+#  gateway.recover_after_nodes: 1
+#  gateway.recover_after_time: 5m
+#  gateway.expected_nodes: 2
+#  indices.recovery.max_bytes_per_sec: 20mb
+#  indices.recovery.concurrent_streams: 5
+###################################### Discovery ###############################################
+#  
+#  EC2 discovery allows to use AWS EC2 API in order to perform d.
+#  
+#  You have to install the cloud-aws plugin for enabling the EC2 discovery.
+#  
+#  For more information, see
+#  <http://elasticsearch.org/guide/en/elasticsearch/reference/current/modules-discovery-ec2.html>
+#  
+#  See <http://elasticsearch.org/tutorials/elasticsearch-on-ec2/>
+#  for a step-by-step tutorial.
+#  discovery.zen.minimum_master_nodes: 1
+#  discovery.zen.ping.timeout: 3s
+#  discovery.zen.ping.multicast.enabled: false
+#  discovery.zen.ping.unicast.hosts: ["host1", "host2:port"]

@@ -1,0 +1,32 @@
+---
+#
+# Default Ansible YAML
+#
+- name: create redis config_path
+  file: path=/etc/redis state=directory
+  
+- name: create redis config
+  template: src=etc/redis/redis.conf.j2 dest=/etc/redis/{{ redis_port }}.conf
+  notify: 
+    - add redis-{{ redis_port }} service
+    - enable the redis service
+    - restart redis-{{ redis_port }}
+
+- name: create redis log dir
+  file: path={{ redis_log_dir }} state=directory
+
+- name: create redis log dir
+  file: path={{ redis_logfile }} state=touch
+
+- name: install redis service script
+  template: src=etc/init.d/redis.j2 dest=/etc/init.d/redis-{{ redis_port }} mode=0755
+  notify: 
+    - add redis-{{ redis_port }} service
+    - enable the redis service
+    - start the redis service
+
+- name: Set the kernel paramter for vm overcommit 
+  sysctl: name=vm.overcommit_memory value=1 state=present
+  when: redis_overcommit_memory|bool
+  ignore_errors: True
+  

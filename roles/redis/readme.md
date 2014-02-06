@@ -1,0 +1,1 @@
+# Redis Role for Ansible

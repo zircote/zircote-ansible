@@ -1,0 +1,16 @@
+---
+# Default Ansible YAML
+
+- name: "restart redis-{{ redis_port }}"
+  service: name="redis-{{ redis_port }}" state=restarted enabled=yes
+  sudo: yes
+
+- name: enable the redis service
+  service: name={{ redis_service }} enabled=yes
+
+- name: start the redis service
+  service: name={{ redis_service }} state=started
+
+- name: add redis-{{ redis_port }} service
+  command: chkconfig --add redis-{{ redis_port }}
+  sudo: yes

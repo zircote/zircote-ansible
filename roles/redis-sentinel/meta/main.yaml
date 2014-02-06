@@ -1,0 +1,5 @@
+---
+# Default Ansible YAML
+
+- dependecies:
+  - role: redis

@@ -1,0 +1,115 @@
+###############################GENERAL  #####################################
+daemonize {{ redis_daemonize }}
+pidfile {{ redis_pidfile }}
+port {{ redis_port }}
+{% if redis_bind is defined %}
+bind {{ redis_bind }}
+{% endif %}{% if redis_unixsocket is defined %}
+unixsocket {{ redis_unixsocket }}
+{% endif %}{% if redis_unixsocketperm is defined %}
+unixsocketperm {{ redis_unixsocketperm }}
+{% endif %}
+timeout {{ redis_timeout }}
+tcp-keepalive {{ redis_tcp_keepalive }}
+loglevel {{ redis_loglevel }}
+logfile {{ redis_logfile }}
+{% if redis_syslog_ident is defined %}
+syslog-ident {{ redis_syslog_ident }}
+{% endif %}{% if redis_syslog_facility is defined %}
+syslog-facility {{ redis_syslog_facility }}
+{% endif %}
+databases 16
+
+###############################SNAPSHOTTING  ################################
+{% if redis_save is defined %}
+{% for row in redis_save %}
+save {{ row }}
+{% endfor %}
+{% else %}
+save ""
+{% endif %}
+stop-writes-on-bgsave-error {{ redis_stop_writes_on_bgsave_error }}
+rdbcompression {{ redis_rdbcompression }}
+rdbchecksum {{ redis_rdbchecksum }}
+dbfilename {{ redis_dbfilename }}
+dir {{ redis_dir }}
+
+################################REPLICATION #################################
+{% if redis_slaveof is defined %}
+slaveof {{ redis_slaveof }}
+{% endif %}{% if redis_masterauth is defined %}
+masterauth {{ redis_masterauth }}
+{% endif %}
+slave-serve-stale-data {{ redis_slave_serve_stale_data }}
+slave-read-only {{ redis_slave_read_only }}
+{% if redis_repl_ping_slave_period is defined %}
+repl-ping-slave-period {{ redis_repl_ping_slave_period }}
+{% endif %}{% if redis_repl_timeout is defined %}
+repl-timeout {{ redis_repl_timeout }}
+{% endif %}
+repl-disable-tcp-nodelay {{ redis_repl_disable_tcp_nodelay }}
+{% if redis_repl_backlog_size is defined %}
+repl-backlog-size {{ redis_repl_backlog_size }}
+{% endif %}{% if redis_repl_backlog_ttl is defined %}
+repl-backlog_ttl {{ redis_repl_backlog_ttl }}
+{% endif %}
+slave-priority {{ redis_slave_priority }}
+{% if redis_min_slaves_to_write is defined %}
+min-slaves-to-write {{ redis_min_slaves_to_write }}
+{% endif %}{% if redis_min_slaves_max_lag is defined %}
+min-slaves-max-lag {{ redis_min_slaves_max_lag }}
+{% endif %}
+
+#################################SECURITY ###################################
+{% if redis_requirepass is defined %}
+requirepass: {{ redis_requirepass }}
+{% endif %}{% if redis_rename_command is defined %}
+rename-command {{ redis_rename_command }}
+{% endif %}
+
+##################################LIMITS ####################################
+{% if redis_maxclients is defined %}
+maxclients {{ redis_maxclients }}
+{% endif %}{% if redis_maxmemory is defined %}
+maxmemory {{ redis_maxmemory }}
+{% endif %}{% if redis_maxmemory_policy is defined %}
+maxmemory-policy {{ redis_maxmemory_policy }}
+{% endif %}{% if redis_maxmemory_samples is defined %}
+maxmemory-samples {{ redis_maxmemory_samples }}
+{% endif %}
+
+#############################APPEND ONLY MODE ###############################
+appendonly {{ redis_appendonly }}
+appendfilename "{{ redis_appendfilename }}"
+appendfsync {{ redis_appendfsync }}
+no-appendfsync-on-rewrite {{ redis_no_appendfsync_on_rewrite }}
+auto-aof-rewrite-percentage {{ redis_auto_aof_rewrite_percentage }}
+auto-aof-rewrite-min-size {{ redis_auto_aof_rewrite_min_size }}
+
+###############################LUA SCRIPTING  ###############################
+lua-time-limit {{ redis_lua_time_limit }}
+
+#################################SLOW LOG ###################################
+slowlog-log-slower-than {{ redis_slowlog_log_slower_than }}
+slowlog-max-len {{ redis_slowlog_max_len }}
+
+############################Event notification ##############################
+notify-keyspace-events "{{ redis_notify_keyspace_events }}"
+
+##############################ADVANCED CONFIG ###############################
+hash-max-ziplist-entries {{ redis_hash_max_ziplist_entries }}
+hash-max-ziplist-value {{ redis_hash_max_ziplist_value }}
+list-max-ziplist-entries {{ redis_list_max_ziplist_entries }}
+list-max-ziplist-value {{ redis_list_max_ziplist_value }}
+set-max-intset-entries {{ redis_set_max_intset_entries }}
+zset-max-ziplist-entries {{ redis_zset_max_ziplist_entries }}
+zset-max-ziplist-value {{ redis_zset_max_ziplist_value }}
+activerehashing {{ redis_activerehashing }}
+{% if redis_client_output_buffer_limit is defined %}
+{% for row in redis_client_output_buffer_limit %}
+client-output-buffer-limit {{ row }}
+{% endfor %}
+{% endif %}
+hz {{ redis_hz }}
+aof-rewrite-incremental-fsync {{ redis_aof_rewrite_incremental_fsync }}
+
