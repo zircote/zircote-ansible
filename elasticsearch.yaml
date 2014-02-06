@@ -1,5 +1,6 @@
 ---
 - name: Elasticsearch
+#  gather_facts: no
   hosts: elasticsearch
   sudo: yes
   roles:
