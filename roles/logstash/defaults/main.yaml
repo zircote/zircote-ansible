@@ -1,4 +1,16 @@
 ---
-# Default Ansible YAML
-logstash_version: 1.3.3
-logstash_jar: https://download.elasticsearch.org/logstash/logstash/logstash-{{ logstash_version }}-flatjar.jar
+logstash:
+  version: 1.3.3
+  jar: logstash-{{ logstash.version }}-flatjar.jar
+  url: https://download.elasticsearch.org/logstash/logstash/{{ logstash.jar }}
+  indexer: 
+      conf: '/etc/logstash/indexer.conf'
+      service: 'logstash-indexer'
+      name: 'logstash-indexer'
+    shipper: 
+      conf: '/etc/logstash/shipper.conf'
+      service: 'logstash-shipper'
+      name: 'logstash-shipper'
+    web:
+      service: 'logstash-web'
+      name: 'logstash-web'

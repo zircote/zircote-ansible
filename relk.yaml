@@ -23,7 +23,7 @@
       indexer:
         input:
           redis:
-            host: {{ansible_eth0.ipv4.address}}
+            host: "{{ansible_eth0.ipv4.address}}"
             data_type: list
             key: logstash
             codec: json
@@ -32,7 +32,7 @@
             debug: true
             debug_format: json
           elasticsearch:
-            host: {{ansible_eth0.ipv4.address}}
+            host: "{{ansible_eth0.ipv4.address}}"
         filter: []
   roles:
    - role: logstash

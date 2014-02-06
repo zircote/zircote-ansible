@@ -1,3 +1,40 @@
 ---
-# Default Ansible YAML
+- name: "Create Logstash directories"
+  action: file path={{ item }} group=root owner=root mode=0755 state=directory
+  with_items:
+    - '{{ logstash.dir }}'
+    - '{{ logstash.dir }}/bin'
+    - '{{ logstash.dir }}/etc'
 
+- name: "Fetch Logstash"
+  get_url: url={{ logstash.url }}/{{ logstash.jar }} dest={{ logstash.dir }}/bin thirsty=yes mode=0440
+  register: get_jar
+
+- name: Install Logstash indexer config
+  action: template src=logstash_indexer.conf.j2 dest={{ logstash.indexer.conf }} owner=root group=root mode=0755
+  when: with_indexer
+  notify:
+    - "Restart Logstash indexer"
+
+- name: "Install Logstash shipper config"
+  action: template src=logstash_shipper.conf.j2 dest={{ logstash.shipper.conf }} owner=root group=root mode=0755
+  when: with_shipper
+  register: shipper_config
+  notify:
+    - "Restart Logstash shipper"
+
+- name: "Install Logstash indexer init script"
+  action: template src=logstash_indexer.j2 dest=/etc/init.d/{{ logstash.indexer.service }} owner=root group=root mode=0755
+  when: with_indexer
+
+- name: "Install Logstash shipper init script"
+  action: template src=logstash_shipper.j2 dest=/etc/init.d/{{ logstash.shipper.service }} owner=root group=root mode=0755
+  when: with_shipper
+  
+- name: "Start Logstash indexer"
+  action: service name={{ logstash.indexer.service }} state=started
+  when: with_indexer
+
+- name: "Start Logstash shipper"
+  action: service name={{ logstash.shipper.service }} state=started
+  when: with_shipper
