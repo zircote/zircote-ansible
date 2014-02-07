@@ -3,12 +3,12 @@ input {
     type => "linux-syslog"
 
     # Wildcards work, here :)
-    path => [ "/var/log/*.log", "/var/log/messages", "/var/log/syslog" ]
+    path => [ "/var/log/*.log", "/var/log/messages", "/var/log/syslog", "/usr/share/logstash/log/*" ]
   }
 
 }
 
 output {
   stdout { debug => true debug_format => "json"}
-  redis { host => "{{ with_redis_server_ip }}" data_type => "list" key => "logstash" }
+  redis { host => "{{ logstash_config.redis_server_ip }}" data_type => "list" key => "logstash" }
 }

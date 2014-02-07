@@ -1,6 +1,6 @@
 input {
   redis {
-    host => "{{ with_redis_server_ip }}"
+    host => "{{ logstash_config.redis_server_ip }}"
     type => "redis-input"
     # these settings should match the output of the agent
     data_type => "list"
@@ -16,7 +16,7 @@ output {
 
   elasticsearch {
     #cluster => "logstash"
-    #bind_host => "{{ with_elasticsearch_ip }}"
-    host => "{{ with_elasticsearch_ip }}"
+    #bind_host => "{{ logstash_config.elasticsearch_ip }}"
+    host => "{{ logstash_config.elasticsearch_ip }}"
   }
 }

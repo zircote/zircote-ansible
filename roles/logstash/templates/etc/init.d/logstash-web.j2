@@ -30,7 +30,7 @@ SCRIPTNAME=/etc/init.d/$NAME
 [ -r /etc/default/$NAME ] && . /etc/default/$NAME
 
 # Load the VERBOSE setting and other rcS variables
-. /lib/init/vars.sh
+[[ -f /lib/init/vars.sh ]] && . /lib/init/vars.sh
 
 VERBOSE="yes"
 

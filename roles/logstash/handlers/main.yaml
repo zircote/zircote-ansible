@@ -1,3 +1,9 @@
 ---
-# Default Ansible YAML
+- name: restart logstash shipper
+  service: name={{ logstash.shipper.name }} state=restarted
 
+- name: restart logstash indexer
+  service: name={{ logstash.indexer.name }} state=restarted
+
+- name: restart logstash web
+  service: name={{ logstash.web.name }} state=restarted
