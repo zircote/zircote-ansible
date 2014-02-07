@@ -1,9 +1,8 @@
 input {
   file {
     type => "linux-syslog"
-
-    # Wildcards work, here :)
-    path => [ "/var/log/*.log", "/var/log/messages", "/var/log/syslog", "/usr/share/logstash/log/*" ]
+    sincedb_path => "/usr/share/logstash/data"
+    path => [ "/var/log/*.log", "/var/log/messages", "/var/log/syslog", "/usr/share/logstash/log/*", "/var/log/elasticsearch/*.log" ]
   }
 
 }
