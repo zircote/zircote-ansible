@@ -1,6 +1,6 @@
 #! /bin/sh
 #
-#	/etc/init.d/{{ logstash.shipper.name }}
+#	/etc/init.d/{{ logstash.indexer.name }}
 #
 #	Starts Logstash as a daemon
 #
@@ -19,23 +19,22 @@
 
 ### END INIT INFO
 
-# Amount of memory for Java
-#JAVAMEM=256M
-
-# Location of logstash files
-LOCATION={{ logstash.dir }}
-
+LOCATION={{ logstash.bin_dir | dirname }}
+JAVA_ARGS="{{ logstash.indexer.java_args }}"
 PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 DESC="Logstash Indexer Daemon"
 NAME={{ logstash.indexer.name }}
 DAEMON=$(which java)
-CONFIG_DIR=${LOCATION}/etc/{{ logstash.indexer.conf }}
-LOGFILE=${LOCATION}/log/${NAME}.log
-JARNAME=${LOCATION}/bin/{{ logstash.jar }}
-#ARGS="-Xmx$JAVAMEM -Xms$JAVAMEM -jar ${JARNAME} agent --config ${CONFIG_DIR} --log ${LOGFILE} --grok-patterns-path ${PATTERNSPATH}"
-ARGS="-jar ${JARNAME} agent --config ${CONFIG_DIR} --log ${LOGFILE}"
+CONFIG_PATH="{{ logstash.config_path }}"
+PATTERNSPATH="{{ logstash.grok_patterns_path }}"
+LOGFILE={{ logstash.log_path }}/{{ logstash.indexer.log }}
+JARNAME="${LOCATION}/bin/{{ logstash.jar }}"
 SCRIPTNAME=/etc/init.d/${NAME}
 PIDFILE=/var/run/${NAME}.pid
+
+ARGS="${JAVA_ARGS} -jar ${JARNAME} agent --config ${CONFIG_PATH} --log ${LOGFILE}"
+[[ -z ${PATTERNSPATH} && -d ${PATTERNSPATH} ]] && ARGS="${ARGS} --grok-patterns-path ${PATTERNSPATH}"
+
 base=logstash
 
 # Exit if the package is not installed
@@ -68,21 +67,21 @@ set_pidfile()
 #
 do_stop()
 {
-  pid=`cat $PIDFILE`
-                       if checkpid $pid 2>&1; then
-                           # TERM first, then KILL if not dead
-                           kill -TERM $pid >/dev/null 2>&1
-                           usleep 100000
-                           if checkpid $pid && sleep 1 &&
-                              checkpid $pid && sleep $delay &&
-                              checkpid $pid ; then
-                                kill -KILL $pid >/dev/null 2>&1
-                                usleep 100000
-                           fi
-                        fi
-                        checkpid $pid
-                        RC=$?
-                        [ "$RC" -eq 0 ] && failure $"$base shutdown" || success $"$base shutdown"
+    pid=`cat $PIDFILE`
+    if checkpid $pid 2>&1; then
+       # TERM first, then KILL if not dead
+       kill -TERM $pid >/dev/null 2>&1
+       usleep 100000
+       if checkpid $pid && sleep 1 &&
+          checkpid $pid && sleep $delay &&
+          checkpid $pid ; then
+            kill -KILL $pid >/dev/null 2>&1
+            usleep 100000
+       fi
+    fi
+    checkpid $pid
+    RC=$?
+    [ "$RC" -eq 0 ] && failure $"$base shutdown" || success $"$base shutdown"
 
 }
 

@@ -1,3 +1,8 @@
 ---
 # Default Ansible YAML
-
+kibana:
+  url: https://download.elasticsearch.org/kibana/kibana/
+  version: 3.0.0milestone4
+  install_dir: /var/www/html
+  tmp: /tmp
+  elasticsearch_ip_addr: "{{ elasticsearch_ip_addr }}"

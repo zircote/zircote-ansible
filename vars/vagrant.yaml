@@ -10,6 +10,7 @@ elasticsearch_config:
   network.bind_host: 0.0.0.0
   network.publish_host: "{{ elasticsearch_ip_addr }}"
   network.host: 192.168.0.1
+  index.routing.allocation.disable_allocation: false
   index.search.slowlog.threshold.query.warn: 10s
   index.search.slowlog.threshold.query.info: 5s
   index.search.slowlog.threshold.query.debug: 2s

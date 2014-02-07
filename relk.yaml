@@ -1,33 +1,11 @@
 ---
-# Redis/Elasticsearch/Logstash/Kibana
-#- hosts: redis-servers
-#  sudo: yes
-#  vars_files:
-#    - "vars/{{ deploy_env }}.yaml"
-#  roles:
-#   - role: redis-server
-#
-#- hosts: elasticsearch
-#  sudo: yes
-#  vars_files:
-#    - "vars/{{ deploy_env }}.yaml"
-#  roles:
-#   - role: elasticsearch
-
-- hosts: logstash
+- hosts: elasticsearch
   sudo: yes
   vars_files:
     - "vars/{{ deploy_env }}.yaml"
-  vars:
-    logstash_config:
-      redis_server_ip: 127.0.0.1
-      elasticsearch_ip: 127.0.0.1
   roles:
+   - role: redis-server
+   - role: elasticsearch
    - role: logstash
+   - role: kibana
 
-#- hosts: kibana
-#  sudo: yes
-#  vars_files:
-#    - "vars/{{ deploy_env }}.yaml"
-#  roles:
-#   - role: kibana

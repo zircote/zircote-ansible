@@ -1,0 +1,9 @@
+---
+- name: "Fetch Logstash"
+  get_url: url={{ logstash.url }}/centos/logstash-{{ logstash.version }}_centos.noarch.rpm
+           dest={{ logstash.tmp }}/logstash-{{ logstash.version }}_centos.noarch.rpm 
+  register: logstash_rpm
+
+- name: "Install Logstash package"
+  shell: rpm -ivh {{ logstash.tmp }}/logstash-{{ logstash.version }}_centos.noarch.rpm 
+  when: logstash_rpm|changed

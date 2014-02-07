@@ -1,0 +1,9 @@
+---
+- name: "Fetch Logstash"
+  get_url: url={{ logstash.url }}/debian/logstash_{{ logstash.version }}-debian_all.deb
+           dest={{ logstash.tmp }}/logstash_{{ logstash.version }}-debian_all.deb
+  register: logstash_deb
+
+- name: "Install Logstash package"
+  action: shell dpkg -i -E --force-confnew {{ logstash.tmp }}/logstash_{{ logstash.version }}-debian_all.deb
+  when: logstash_deb|changed

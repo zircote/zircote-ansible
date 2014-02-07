@@ -1,3 +1,20 @@
 ---
 # Default Ansible YAML
+- name: fetch kibana tar
+  get_url: url={{ kibana.url }}/kibana-{{ kibana.version }}.tar.gz 
+           dest={{ kibana.tmp }}/kibana-{{ kibana.version }}.tar.gz
 
+- name: create {{ {{ kibana.install_dir }} 
+  file: path={{ kibana.install_dir }} state=directory owner=apache group=apache
+
+- name: extract kibana
+  shell: tar -xzf {{ kibana.tmp }}/kibana-{{ kibana.version }}.tar.gz chdir={{ kibana.install_dir }}
+
+- name: link kibana
+  file: path={{ kibana.install_dir }}/kibana src=kibana-{{ kibana.version }} state=link
+
+- name: logstash.json => default.json
+  copy: src=logstash.json dest={{ kibana.install_dir }}/kibana/app/dashboards/default.json
+
+- name: install kibana.conf
+  template: src=config.js.j2 dest={{ kibana.install_dir }}/kibana/config.js

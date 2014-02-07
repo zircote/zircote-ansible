@@ -1,0 +1,9 @@
+---
+- include: logstash_deb.yaml tags=logstash
+  when: ansible_distribution in [ 'Debian', 'Ubuntu' ]
+
+- include: logstash_rpm.yaml tags=logstash
+  when: ansible_distribution in [ 'Red Hat Enterprise Linux', 'CentOS', 'Amazon' ]
+
+- name: ensure service stopped
+  service: name=logstash state=stopped

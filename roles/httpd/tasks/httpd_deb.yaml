@@ -1,0 +1,5 @@
+---
+- name: install apache via apt
+  apt: name={{ item }} state=installed
+  with_items:
+    - apache

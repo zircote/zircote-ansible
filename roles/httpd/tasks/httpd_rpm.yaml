@@ -1,0 +1,8 @@
+---
+- name: install httpd via yum
+  yum: name={{ item }} state=installed
+  with_items:
+    - httpd
+
+- name: ensure httpd started
+  service: name=httpd state=started

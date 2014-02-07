@@ -1,0 +1,50 @@
+---
+- name: "create logstash directories"
+  file: path={{ item }} group=root owner=root mode=0755 state=directory
+  with_items:
+    - "{{ logstash.bin_dir | dirname  }}"
+    - "{{ logstash.bin_dir }}"
+    - "{{ logstash.grok_patterns_path }}"
+    - "{{ logstash.config_path }}"
+    - "{{ logstash.log_path }}"
+    - "{{ logstash_config.sincedb_path }}"
+
+- name: "fetch logstash"
+  get_url: url={{ logstash.url }}/{{ logstash.jar }} dest={{ logstash.bin_dir }}/{{ logstash.jar }}
+           mode=0440
+
+- name: install logstash indexer config
+  template: src=etc/logstash/indexer.conf.j2 dest={{ logstash.config_path }}/{{ logstash.indexer.config }}
+            owner=root group=root mode=0644
+  notify:
+    - restart logstash indexer
+
+- name: "install logstash shipper config"
+  template: src=etc/logstash/shipper.conf.j2 dest={{ logstash.config_path }}/{{ logstash.shipper.config }} 
+            owner=root group=root mode=0644
+  notify:
+    - restart logstash shipper
+
+- name: "install logstash indexer init script"
+  template: src=etc/init.d/logstash-indexer.j2 dest=/etc/init.d/{{ logstash.indexer.service }}
+            owner=root group=root mode=0755
+  register: logstash_indexer_init
+  
+- name: "install logstash shipper init script"
+  template: src=etc/init.d/logstash-shipper.j2 dest=/etc/init.d/{{ logstash.shipper.service }}
+            owner=root group=root mode=0755
+  register: logstash_shipper_init
+
+- name: chkconfig logstash indexer
+  command: chkconfig --add {{ logstash.indexer.service }}
+  when: logstash_indexer_init | changed
+  
+- name: chkconfig logstash indexer
+  command: chkconfig --add {{ logstash.shipper.service }}
+  when: logstash_shipper_init | changed
+
+- name: "start logstash indexer"
+  service: name={{ logstash.indexer.service }} state=started
+
+- name: "start logstash shipper"
+  service: name={{ logstash.shipper.service }} state=started

@@ -9,6 +9,8 @@ elasticsearch:
   plugins:
     - { name: paramedic, origin: karmi/elasticsearch-paramedic }
     - { name: lang-python, origin: elasticsearch/elasticsearch-lang-python/2.0.0.RC1 }
+    - { name: bigdesk, origin: lukas-vlcek/bigdesk }
+    - { name: marvel, origin: elasticsearch/marvel/latest }
 
 elasticsearch_ip_addr: "{{ansible_eth0.ipv4.address}}"
 elasticsearch_logger:
