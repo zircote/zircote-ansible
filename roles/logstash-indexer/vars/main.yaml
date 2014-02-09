@@ -1,3 +1,54 @@
 ---
 # Default Ansible YAML
-
+logstash_config:
+  - config_file: var_logs.conf
+    input:
+      - type: file
+        params:
+          add_field: ""
+          codec:
+            type: plain
+            params:
+              charset: "utf-8"
+              format: "blah"
+          debug: ""
+          discover_interval: 15
+          exclude: ""
+          path:
+            - /var/log/*.log
+            - /var/log/messages
+            - /var/log/httpd/*log
+          sincedb_path: ""
+          sincedb_write_interval: 15
+          start_position: "end"
+          stat_interval: 1
+    filter:
+      - type: grok
+        params:
+          match:
+            - message
+            - "%{IP:client} %{WORD:method} %{URIPATHPARAM:request} %{NUMBER:bytes} %{NUMBER:duration}"
+    output:
+      - type: redis
+        params:
+          batch: false
+          batch_events: 50
+          batch_timeout: 5
+          codec:
+            type: plain
+            params:
+              charset: ""
+              format: ""
+          congestion_interval: 1
+          congestion_threshold: 0
+          data_type: list
+          db: 0
+          host: 127.0.0.1
+          key: logstash
+#          password: ""
+          port: 6379
+          reconnect_interval: 1
+          shuffle_hosts: true
+          timeout: 5
+          workers: 1
+          

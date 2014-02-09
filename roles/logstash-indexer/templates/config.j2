@@ -1,0 +1,62 @@
+# {{ item.config_file }}
+{% if item.input %}
+
+input {
+{% for input in item.input %}
+    {{ input.type }} {
+{% for key, value in input.params.iteritems() %}
+{% if key == 'codec' %}
+        codec => {
+{% for c_key, c_value in value.params.iteritems() %}
+            {{ c_key }} => {{ c_value }}
+{% endfor %}
+        }
+{% else %}
+{% if value %}
+        {{ key }} => {{ value }}
+{% endif %}
+{% endif %}
+{% endfor %}
+    }
+{% endfor %}
+}
+{% endif %}
+
+
+{% if item.filter %}
+
+filter {
+{% for filter in item.filter %}
+    {{ filter.type }} {
+{% for key, value in filter.params.iteritems() %}
+{% if value %}
+        {{ key }} => {{ value }}
+{% endif %}
+{% endfor %}
+    }
+{% endfor %}
+}
+{% endif %}
+
+{% if item.output %}
+
+output {
+{% for output in item.output %}
+    {{ output.type }} {
+{% for key, value in output.params.iteritems() %}
+{% if key == 'codec' %}
+        codec => {
+{% for c_key, c_value in value.params.iteritems() %}
+            {{ c_key }} => {{ c_value }}
+{% endfor %}
+        }
+{% else %}
+{% if value %}
+        {{ key }} => {{ value }}
+{% endif %}
+{% endif %}
+{% endfor %}
+    }
+{% endfor %}
+}
+{% endif %}

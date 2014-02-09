@@ -1,9 +1,5 @@
 ---
-- hosts: redis
-  vars_files:
-    - "vars/{{ deploy_env }}.yaml"
+- hosts: vagrant
+  gather_facts: false
   roles:
-   - role: redis-server
-   - role: elasticsearch
-#   - role: logstash
-#   - role: kibana
+   - role: logstash-indexer
