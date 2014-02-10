@@ -1,0 +1,62 @@
+{% macro logstashs_keyval(key, value) -%}
+{% set _l = value|string|list %}{% if _l[0] == "[" %}{{ key }} => {{ value }}{% else %}{{ key }} => "{{ value }}"{% endif %}
+{%- endmacro %}
+# {{ item.config_file }}
+{% if item.input %}
+
+input {
+{% for input in item.input %}
+    {{ input.type }} { {% if input.params is defined %} 
+{% for key, value in input.params.iteritems() %}
+{% if key == 'codec' %}
+        codec => {{ value.type }} { {% if value.params is defined %} 
+{% for c_key, c_value in value.params.iteritems() %}
+            {{ logstashs_keyval(c_key, c_value) }}
+{% endfor %}
+        {% endif %}}
+{% else %}
+{% if value %}
+        {{ logstashs_keyval(key, value) }}
+{% endif %}
+{% endif %}
+{% endfor %}
+    {% endif %}}
+{% endfor %}
+}
+{% endif %}
+
+{% if item.filter is defined %}
+filter {
+{% for filter in item.filter %}
+    {{ filter.type }} { {% if filter.params is defined %} 
+{% for key, value in filter.params.iteritems() %}
+{% if value %}
+        {{ logstashs_keyval(key, value) }}
+{% endif %}
+{% endfor %}
+    {% endif %}}
+{% endfor %}
+}
+{% endif %}
+{% if item.output %}
+
+output {
+{% for output in item.output %}
+    {{ output.type }} { {% if output.params is defined %} 
+{% for key, value in output.params.iteritems() %}
+{% if key == 'codec' %}
+        codec => {{ value.type }} { {% if value.params is defined %} 
+{% for c_key, c_value in value.params.iteritems() %}
+            {{ logstashs_keyval(c_key, c_value) }} 
+{% endfor %}
+        {% endif %}}
+{% else %}
+{% if value %}
+        {{ logstashs_keyval(key, value) }}
+{% endif %}
+{% endif %}
+{% endfor %}
+    {% endif %}}
+{% endfor %}
+}
+{% endif %}

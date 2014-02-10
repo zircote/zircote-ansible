@@ -65,3 +65,51 @@ elasticsearch_config:
 #  discovery.zen.ping.timeout: 3s
 #  discovery.zen.ping.multicast.enabled: false
 #  discovery.zen.ping.unicast.hosts: ["host1", "host2:port"]
+logstash_config:
+#  - config_file: shipper.conf
+#    input:
+#      - type: file
+#        params:
+#          discover_interval: 15
+#          path:
+#            - /var/log/messages
+#          sincedb_path: "/tmp"
+#          codec:
+#            type: plain
+#    output:
+#      - type: redis
+#        params:
+#          host: localhost
+#          data_type: list
+#          key: logstash
+#          codec:
+#            type: json
+  - config_file: indexer.conf
+    input:
+      - type: redis
+        params:
+          host: localhost
+          data_type: list
+          key: logstash
+          codec:
+            type: json
+    output:
+      - type: elasticsearch
+        params:
+          host: localhost
+  - config_file: httpd_shipper.conf
+    input:
+      - type: file
+        params:
+          type: apache
+          path: /var/log/httpd/access_json.log
+          format: json_event
+          sincedb_path: "/tmp"
+    output:
+      - type: redis
+        params:
+          host: localhost
+          data_type: list
+          key: logstash
+          codec:
+            type: json

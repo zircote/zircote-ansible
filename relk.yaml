@@ -1,6 +1,7 @@
 ---
 - hosts: elasticsearch
   sudo: yes
+  gather_facts: true
   vars_files:
     - "vars/{{ deploy_env }}.yaml"
   roles:
@@ -8,4 +9,3 @@
    - role: elasticsearch
    - role: logstash
    - role: kibana
-

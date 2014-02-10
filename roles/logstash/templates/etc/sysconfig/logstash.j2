@@ -1,0 +1,26 @@
+# Set 'START' to true to have logstash start.
+{% if logstash.start %}
+START=true
+{% else %}
+START=false
+{% endif %}
+
+{% if logstash.open_files is defined %}
+# The 'ulimit -n' setting for logstash.
+# You may need to increase this if you are using
+# the elasticsearch output with 'embedded => true'
+OPEN_FILES={{ logstash.open_files }}
+{% endif %}
+
+{% if logstash.filter_threads is defined and logstash.filter_threads %}
+# How many filter workers to run.
+# Note this requires you use thread-safe filters
+FILTER_THREADS=true
+{% endif %}
+
+{% if logstash.java_opts is defined %}
+# The flags to provide to java
+LS_JAVA_OPTS="{{ logstash.java_opts }}"
+{% endif %}
+
+SINCEDB_DIR=/tmp
