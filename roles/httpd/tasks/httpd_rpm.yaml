@@ -5,7 +5,7 @@
     - httpd
 
 - name: setup json logging
-  file: src=etc/httpd/conf.d/json_log.conf dest=/etc/httpd/conf.d/json_log.conf owner=root
+  copy: src=etc/httpd/conf.d/json_log.conf dest=/etc/httpd/conf.d/json_log.conf owner=root
   notify: restart httpd
 
 - name: ensure httpd started

@@ -8,9 +8,9 @@
 - name: create redis config
   template: src=etc/redis/redis.conf.j2 dest=/etc/redis/{{ redis_port }}.conf
   notify: 
-    - add redis-{{ redis_port }} service
+    - add {{ redis_service }} service
     - enable the redis service
-    - restart redis-{{ redis_port }}
+    - restart {{ redis_service }}
 
 - name: create redis log dir
   file: path={{ redis_log_dir }} state=directory
@@ -19,9 +19,9 @@
   file: path={{ redis_logfile }} state=touch
 
 - name: install redis service script
-  template: src=etc/init.d/redis.j2 dest=/etc/init.d/redis-{{ redis_port }} mode=0755
+  template: src=etc/init.d/redis.j2 dest=/etc/init.d/{{ redis_service }} mode=0755
   notify: 
-    - add redis-{{ redis_port }} service
+    - add {{ redis_service }} service
     - enable the redis service
     - start the redis service
 

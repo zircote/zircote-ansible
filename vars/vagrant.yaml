@@ -66,6 +66,17 @@ elasticsearch_config:
 #  discovery.zen.ping.multicast.enabled: false
 #  discovery.zen.ping.unicast.hosts: ["host1", "host2:port"]
 logstash_config:
+  - config_file: httpd_shipper.conf
+    input:
+      - type: file
+        params:
+          path: /var/log/httpd/access_json.log
+          format: json_event
+          sincedb_path: "/tmp/.sincedb_path"
+    output:
+      - type: elasticsearch
+        params:
+          host: localhost
 #  - config_file: shipper.conf
 #    input:
 #      - type: file
@@ -84,32 +95,16 @@ logstash_config:
 #          key: logstash
 #          codec:
 #            type: json
-  - config_file: indexer.conf
-    input:
-      - type: redis
-        params:
-          host: localhost
-          data_type: list
-          key: logstash
-          codec:
-            type: json
-    output:
-      - type: elasticsearch
-        params:
-          host: localhost
-  - config_file: httpd_shipper.conf
-    input:
-      - type: file
-        params:
-          type: apache
-          path: /var/log/httpd/access_json.log
-          format: json_event
-          sincedb_path: "/tmp"
-    output:
-      - type: redis
-        params:
-          host: localhost
-          data_type: list
-          key: logstash
-          codec:
-            type: json
+#  - config_file: indexer.conf
+#    input:
+#      - type: redis
+#        params:
+#          host: localhost
+#          data_type: list
+#          key: logstash
+#          codec:
+#            type: json
+#    output:
+#      - type: elasticsearch
+#        params:
+#          host: localhost
