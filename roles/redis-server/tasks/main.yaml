@@ -1,16 +1,10 @@
 ---
-#
-# Default Ansible YAML
-#
 - name: create redis config_path
   file: path=/etc/redis state=directory
   
 - name: create redis config
   template: src=etc/redis/redis.conf.j2 dest=/etc/redis/{{ redis_port }}.conf
-  notify: 
-    - add {{ redis_service }} service
-    - enable the redis service
-    - restart {{ redis_service }}
+  notify: add {{ redis_service }} service
 
 - name: create redis log dir
   file: path={{ redis_log_dir }} state=directory

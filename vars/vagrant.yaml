@@ -73,38 +73,21 @@ logstash_config:
           path: /var/log/httpd/access_json.log
           format: json_event
           sincedb_path: "/tmp/.sincedb_path"
+      - type: file
+        params:
+          type: syslog
+          sincedb_path: "/tmp/.sincedb_path"
+          path:
+            - "/var/log/*.log"
+            - "/var/log/messages"
+            - "/var/log/syslog"
+      - type: file
+        params:
+          sincedb_path: "/tmp/.sincedb_path"
+          type: apache-error
+          path: /var/log/httpd/error_log
+          
     output:
       - type: elasticsearch
         params:
-          host: localhost
-#  - config_file: shipper.conf
-#    input:
-#      - type: file
-#        params:
-#          discover_interval: 15
-#          path:
-#            - /var/log/messages
-#          sincedb_path: "/tmp"
-#          codec:
-#            type: plain
-#    output:
-#      - type: redis
-#        params:
-#          host: localhost
-#          data_type: list
-#          key: logstash
-#          codec:
-#            type: json
-#  - config_file: indexer.conf
-#    input:
-#      - type: redis
-#        params:
-#          host: localhost
-#          data_type: list
-#          key: logstash
-#          codec:
-#            type: json
-#    output:
-#      - type: elasticsearch
-#        params:
-#          host: localhost
+          host: "127.0.0.1"
