@@ -1,0 +1,46 @@
+---
+statsd:
+  version: 0.7.1
+  url: https://github.com/etsy/statsd/archive/v0.7.1.tar.gz
+statsd_config:
+  port: 8125
+  graphiteHost: 127.0.0.1
+  graphitePort: 2003
+  backends:
+    - /usr/share/statsd/backends/graphite
+  debug: false
+  address: 0.0.0.0
+  address_ipv6: false
+  port: 8125
+  mgmt_address: 0.0.0.0
+  mgmt_port: 8126
+  healthStatus: up
+  dumpMessages: false
+  flushInterval: 1000
+  percentThreshold: 90
+  keyFlush:
+    interval: 0
+    percent: 100
+    log: STDOUT
+  deleteIdleStats:  false
+  deleteGauges: false
+  deleteTimers: false
+  deleteSets: false
+  deleteCounters: false
+  prefixStats: statsd
+  console:
+    prettyprint: true
+  log:
+    backend: stdout
+    application: statsd
+    level: LOG_INFO
+  graphite:
+    legacyNamespace: true
+    globalPrefix: stats
+    prefixCounter: counters
+    prefixTimer: timers
+    prefixGauge: gauges
+    prefixSet: sets
+  repeater: []
+  repeaterProtocol: udp4
+  histogram: []

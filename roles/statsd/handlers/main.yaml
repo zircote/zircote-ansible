@@ -1,0 +1,10 @@
+---
+# Default Ansible YAML
+- name: install statsd service
+  command: chkconfig --add statsd
+
+- name: restart statsd
+  service: name=statsd state=restarted
+
+- name: start statsd
+  service: name=statsd state=started

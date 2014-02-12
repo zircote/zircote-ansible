@@ -1,0 +1,5 @@
+---
+# Default Ansible YAML
+
+- name: install nodejs via yum
+  yum: name=nodejs state=installed

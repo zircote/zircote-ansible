@@ -1,0 +1,37 @@
+---
+# Default Ansible YAML
+- name: create statsd group
+  group: name=statsd state=present system=yes
+
+- name: create statsd user
+  user: name=statsd group=statsd system=yes home=/usr/share/statsd createhome=no
+
+- name: fetch statsd source
+  get_url: url={{ statsd.url }} dest=/tmp/statsd-{{ statsd.version }}.tar.gz 
+
+- name: untar statsd
+  command: tar xvzf /tmp/statsd-{{ statsd.version }}.tar.gz chdir=/usr/share
+  notify:
+    - install statsd service
+    - restart statsd
+
+- name: create statsd link
+  file: src=/usr/share/statsd-{{ statsd.version }} dest=/usr/share/statsd 
+        state=link owner=statsd group=statsd
+
+- name: create /etc/statsd
+  file: path=/etc/statsd state=directory owner=root group=root mode=0755
+
+- name: install statsd init
+  copy: src=etc/init.d/statsd dest=/etc/init.d/statsd owner=root group=root mode=0755
+  notify:
+    - install statsd service
+    - restart statsd
+
+- name: create statsd config
+  template: src=etc/statsd/config.js dest=/etc/statsd/config.js owner=root group=root mode=0644
+  notify:
+    - restart statsd
+
+  
+
