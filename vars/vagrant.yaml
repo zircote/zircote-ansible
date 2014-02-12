@@ -90,6 +90,20 @@ logstash_config:
 #          key: logstash
 #          codec:
 #            type: json
+      - type: file
+        params:
+          type: syslog
+          sincedb_path: "/tmp/.sincedb_path"
+          path:
+            - "/var/log/*.log"
+            - "/var/log/messages"
+            - "/var/log/syslog"
+      - type: file
+        params:
+          sincedb_path: "/tmp/.sincedb_path"
+          type: apache-error
+          path: /var/log/httpd/error_log
+          
     output:
       - type: elasticsearch
         params:
