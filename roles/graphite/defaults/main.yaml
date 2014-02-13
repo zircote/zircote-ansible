@@ -1,3 +1,93 @@
 ---
-# Default Ansible YAML
+#####################################
+# general configuration #
+#####################################
+graphite_config_general:
+  secret_key: 'hkgjhfgdw4htre4rw4th'
+  allowed_hosts: 
+    - "*"
+  time_zone: 'UTC'
+#  documentation_url: "http://graphite.readthedocs.org/"
+#  log_rendering_performance: true
+#  log_cache_performance: true
+#  log_metric_access: true
+  debug: false
+#  flushrrdcached: null
+#  memcache_hosts: []
+#  default_cache_duration: 60
 
+#####################################
+# filesystem paths #
+#####################################
+graphite_config_paths:
+  graphite_root: '/usr/share/graphite'
+  conf_dir: '/etc/graphite-web'
+  storage_dir: '/var/lib/graphite-web'
+  content_dir: '/usr/share/graphite/webapp/content'
+#  dashboard_conf: ""
+#  graphtemplates_conf: ""
+  
+## data directories
+  whisper_dir: '/var/lib/carbon/whisper/'
+  rrd_dir: '/var/lib/carbon/rrd'
+  log_dir: '/var/log/graphite-web/'
+  index_file: '/var/lib/graphite-web/index'
+
+
+#####################################
+# email configuration #
+#####################################
+graphite_config_email:
+  email_backend: 'django.core.mail.backends.dummy.emailbackend'
+#  email_host: ''
+#  email_port: ''
+#  email_host_user: ''
+#  email_host_password: ''
+#  email_use_tls: false
+
+
+#####################################
+# authentication configuration #
+#####################################
+graphite_config_auth:
+  use_ldap_auth: false
+#  ldap_uri: "ldaps://ldap.mycompany.com:636"
+#  ldap_search_base: "ou=users,dc=mycompany,dc=com"
+#  ldap_base_user: "cn=some_readonly_account,dc=mycompany,dc=com"
+#  ldap_base_pass: "readonly_account_password"
+#  ldap_user_query: "(username=%s)"
+#  # for active directory use
+#  ldap_user_query: "(samaccountname=%s)"
+#  use_remote_user_authentication: false
+#  login_url: '/account/login'
+#  ldap_optional_script: ""
+
+
+##########################
+# database configuration #
+##########################
+graphite_config_database:
+  databases: 
+    default:
+      NAME: "{{ graphite_config_paths.storage_dir }}/graphite.db"
+      ENGINE: "django.db.backends.sqlite3"
+
+#########################
+# cluster configuration #
+#########################
+graphite_config_cluster:
+#  cluster_servers:
+#    - "10.0.2.2:80"
+#    - "10.0.2.3:80"
+#  remote_store_fetch_timeout: 6   # timeout to fetch series data
+#  remote_store_find_timeout: 2.5  # timeout for metric find requests
+#  remote_store_retry_delay: 60    # time before retrying a failed remote webapp
+#  remote_find_cache_duration: 300 # time to cache remote metric find results
+#  remote_rendering: true
+#  rendering_hosts: []
+#  remote_render_connect_timeout: 1.0
+#  carbonlink_hosts:
+#    - 127.0.0.1:7002:a
+#    - 127.0.0.1:7102:b
+#    - 127.0.0.1:7202:c
+#  carbonlink_timeout: 1.0

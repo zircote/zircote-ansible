@@ -1,3 +1,21 @@
 ---
-# Default Ansible YAML
+- name: install yum packages for graphite
+  yum: name={{ item }} state=installed
+  with_items:
+    - graphite-web
+    - python-carbon
+    - python-whisper
+  notify:
+    - start carbon-cache
 
+- name: install local_settings.py
+  template: src={{ item }} dest=/{{ item }}
+  with_items:
+    - etc/graphite-web/local_settings.py
+    - etc/graphite-web/dashboard.conf
+  notify: 
+    - restart httpd
+    - start carbon-cache
+
+- name: syncdb
+  django_manage: app_path=/usr/lib/python2.6/site-packages/graphite command=syncdb

@@ -1,8 +1,9 @@
 ---
 - hosts: elasticsearch
   sudo: yes
-  gather_facts: false
+  gather_facts: true
   vars_files:
     - "vars/{{ deploy_env }}.yaml"
   roles:
-   - role: statsd
+    - statsd
+    - graphite
