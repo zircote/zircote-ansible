@@ -4,8 +4,8 @@ IP_ADDR = "192.168.10.5"
 
 Vagrant.configure("2") do |config|
 
-  config.vm.box     = "centos64-x86_64-20131030"
-  config.vm.box_url = "https://github.com/2creatives/vagrant-centos/releases/download/v0.1.0/centos64-x86_64-20131030.box"
+  config.vm.box     = "precise64"
+  config.vm.box_url = "http://files.vagrantup.com/precise64.box"
 
   config.vm.network :private_network, ip: IP_ADDR
 

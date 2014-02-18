@@ -1,0 +1,9 @@
+#!/bin/sh
+NEST_EMAIL="zircote@gmail.com"
+NEST_PASSWORD='{{ nest_password }}'
+GOOGLE_MAPS_KEY={{ google_maps_key }}
+TOMTOM_APP_API_KEY={{ tomtom_app_api_key }}
+export NEST_EMAIL
+export NEST_PASSWORD
+export GOOGLE_MAPS_KEY
+export TOMTOM_APP_API_KEY

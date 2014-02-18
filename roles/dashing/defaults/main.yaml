@@ -1,0 +1,11 @@
+---
+# Default Ansible YAML
+dashboard_path: /vagrant/board
+dashboard_name: dashing
+dashboard_port: 3030
+dashing_service_name: dashing
+dashing_user: vagrant
+
+nest_password: null
+google_maps_key: null
+tomtom_app_api_key: null

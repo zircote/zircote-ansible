@@ -1,3 +1,5 @@
 ---
-# Default Ansible YAML
-
+# defaults file for nodejs
+node:
+  version: v0.10.13
+  install_opts: --prefix=/usr

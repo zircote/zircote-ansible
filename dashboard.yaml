@@ -1,0 +1,10 @@
+---
+- hosts: dashboard
+  gather_facts: true
+  sudo: true
+  vars_prompt:
+    nest_password: "nest password?"
+    google_maps_key: "google maps api key?"
+    tomtom_app_api_key: "tomtom app api key?"
+  roles:
+   - role: dashing

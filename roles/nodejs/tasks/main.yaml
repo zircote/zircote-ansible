@@ -1,5 +1,28 @@
 ---
-# Default Ansible YAML
+- name: install development tools RedHat
+  yum: name='@development' state=latest
+  when: ansible_os_family == "RedHat"
 
-- name: install nodejs via yum
-  yum: name=nodejs state=installed
+- name: install development tools Debian
+  apt: name='build-essential' state=latest
+  when: ansible_os_family == "Debian"
+  
+- name: fetch nodejs source
+  get_url: url=http://nodejs.org/dist/{{ node.version }}/node-{{ node.version }}.tar.gz 
+           dest=/tmp/node-{{ node.version }}.tar.gz
+
+- name: untar node source
+  command: tar xzf /tmp/node-{{ node.version }}.tar.gz chdir=/tmp creates=/tmp/node-{{ node.version }}
+
+- name: build node source
+  shell: "{{ item }} chdir=/tmp/node-{{ node.version }} creates=/usr/bin/node"
+  with_items:
+    - "./configure {{ node.install_opts }}"
+    - make
+    - make install
+
+- name: npm install packages
+  npm: name={{ item }} global=yes state=present
+  with_items:
+    - express
+    - coffee-script

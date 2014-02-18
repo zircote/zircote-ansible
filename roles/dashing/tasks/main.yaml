@@ -1,0 +1,38 @@
+---
+- name: install ruby
+  apt: name={{ item }} state=installed
+  with_items:
+    - git
+    - ruby1.9.1
+    - ruby1.9.1-dev
+    - build-essential
+    - libssl-dev
+    - zlib1g-dev
+    - ruby-bundler
+    - libruby
+
+- name: install bundle gem
+  shell: gem install bundler --no-ri --no-rdoc creates=/usr/local/bin/bundle
+  notify:
+    - restart dashing
+  
+- name: install dashing gem
+  shell: gem install dashing --no-ri --no-rdoc creates=/usr/local/bin/dashing
+
+- name: bundle
+  command: bundle install chdir={{ dashboard_path }}
+  sudo: false
+  notify:
+    - restart dashing
+
+- name: install upstart script
+  template: src=etc/init/dashing.conf dest=/etc/init/{{ dashing_service_name }}.conf mode=0644 owner=root group=root
+  
+- name: install service script
+  template: src=usr/local/bin/dashing-service dest=/usr/local/bin/dashing-service mode=0755 owner=root group=root
+
+- name: enable dashing service
+  service: name={{ dashing_service_name }} enabled=yes
+  notify:
+    - restart dashing
+
