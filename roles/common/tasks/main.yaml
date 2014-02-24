@@ -1,0 +1,6 @@
+---
+- include: common_deb.yaml tags=common
+  when: ansible_distribution in [ 'Debian', 'Ubuntu' ]
+
+- include: common_rpm.yaml tags=common
+  when: ansible_distribution in [ 'Red Hat Enterprise Linux', 'CentOS', 'Amazon' ]

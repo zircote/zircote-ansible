@@ -1,0 +1,5 @@
+---
+# Default Ansible YAML
+
+- name: upgrade all packages
+  yum: name=* state=latest

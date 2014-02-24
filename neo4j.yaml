@@ -1,0 +1,7 @@
+---
+- name: neo4j
+#  gather_facts: no
+  hosts: neo4j
+  sudo: yes
+  roles:
+    - neo4j

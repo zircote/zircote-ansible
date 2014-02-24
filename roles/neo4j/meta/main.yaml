@@ -1,0 +1,6 @@
+---
+# Default Ansible YAML
+
+dependencies:
+  - common
+  - openjdk
